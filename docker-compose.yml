@@ -1,0 +1,79 @@
+services:
+  geoserver:
+    image: kartoza/geoserver:2.22.1
+    container_name: water-dp-geoserver
+    restart: unless-stopped
+    environment:
+      - GEOSERVER_ADMIN_PASSWORD=${GEOSERVER_ADMIN_PASSWORD:-geoserver}
+      - GEOSERVER_ADMIN_USER=${GEOSERVER_ADMIN_USER:-admin}
+      - GEOSERVER_DATA_DIR=/opt/geoserver/data_dir
+      - ALLOW_CORS=true
+      - JAVA_OPTS=-Xms512m -Xmx1024m -DGEOSERVER_CSRF_DISABLED=true
+    ports:
+      - "8080:8080"
+    volumes:
+      - geoserver_data:/opt/geoserver/data_dir
+    networks:
+      - water_shared_net
+    healthcheck:
+      test: "curl --fail http://localhost:8080/geoserver/web/ || exit 1"
+      interval: 10s
+      timeout: 10s
+      retries: 30
+      start_period: 120s
+
+  geoserver-init:
+    image: python:3.11-slim
+    container_name: geoserver_init
+    restart: "no"
+    command: python /app/seed_geoserver.py
+    environment:
+      - PYTHONUNBUFFERED=1
+      - GEOSERVER_URL=http://geoserver:8080/geoserver
+      - GEOSERVER_USER=${GEOSERVER_ADMIN_USER:-admin}
+      - GEOSERVER_PASSWORD=${GEOSERVER_ADMIN_PASSWORD:-geoserver}
+      - DB_HOST=geoserver-postgres
+      - DB_PORT=5432
+      - DB_NAME=${POSTGRES_DB:-geoserver_db}
+      - DB_USER=${POSTGRES_USER:-geoserver}
+      - DB_PASSWORD=${POSTGRES_PASSWORD:-geoserver_pass}
+    depends_on:
+      geoserver:
+        condition: service_healthy
+      geoserver-postgres:
+        condition: service_healthy
+    volumes:
+      - ./scripts/seed_geoserver.py:/app/seed_geoserver.py
+      - ./data:/app/data
+    networks:
+      - water_shared_net
+
+  geoserver-postgres:
+    image: postgis/postgis:15-3.3
+    container_name: geoserver-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-geoserver}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-geoserver_pass}
+      - POSTGRES_DB=${POSTGRES_DB:-geoserver_db}
+    ports:
+      - "5455:5432"
+    volumes:
+      - geoserver_pg_data:/var/lib/postgresql/data
+    networks:
+      - water_shared_net
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U geoserver -d geoserver_db" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  geoserver_data:
+  geoserver_pg_data:
+
+
+networks:
+  water_shared_net:
+    name: water_shared_net
+    driver: bridge
