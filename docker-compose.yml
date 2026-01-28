@@ -10,9 +10,10 @@ services:
       - ALLOW_CORS=true
       - JAVA_OPTS=-Xms512m -Xmx1024m -DGEOSERVER_CSRF_DISABLED=true
     ports:
-      - "8080:8080"
+      - "8079:8080"
     volumes:
       - geoserver_data:/opt/geoserver/data_dir
+      - ./conf/server.xml:/usr/local/tomcat/conf/server.xml
     networks:
       - water_shared_net
     healthcheck:
