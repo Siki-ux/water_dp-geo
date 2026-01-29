@@ -615,7 +615,8 @@ services:
     user: "${UID}:${GID}"
     ports:
       - "${PROXY_PLAIN_PORT_MAPPING}"
-      - "${PROXY_TLS_PORT_MAPPING}"
+      # TLS port mapping disabled for HTTP-only deployment
+      # - "${PROXY_TLS_PORT_MAPPING}"
       - "${PROXY_MINIO_PORT_MAPPING}"
     volumes:
       - frontend-statics:/home/appuser/app/static
