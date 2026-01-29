@@ -522,6 +522,9 @@ services:
       OIDC_ADMIN_PASSWORD: "${THING_MANAGEMENT_API_DATABASE_PASS}"
       OIDC_ALLOWED_ISSUERS: "${THING_MANAGEMENT_API_ALLOWED_ISSUERS}"
       OIDC_ALLOWED_AUDIENCES: "${THING_MANAGEMENT_API_ALLOWED_AUDIENCES}"
+      REQUESTS_CA_BUNDLE: /app/root_ca.pem
+    volumes:
+      - /tmp/tsm/fullchain.pem:/app/root_ca.pem:ro
     depends_on:
       mqtt-broker:
         condition: service_healthy
