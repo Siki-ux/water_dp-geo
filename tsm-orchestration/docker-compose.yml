@@ -30,6 +30,7 @@ services:
       - "${MQTT_PERSISTENCE_VOLUME:-mqtt-broker}:/tmp/volume/mqtt"
       - "${VISUALIZATION_PERSISTENCE_VOLUME:-visualization}:/tmp/volume/visualization"
       - "${FROST_PERSISTENCE_VOLUME:-tomcat-context}:/tmp/volume/tomcat"
+      - "proxy-shared-certs:/tmp/volume/proxy"
       # Mount local MinIO FTP TLS certificate and SSH host key
       - "${OBJECT_STORAGE_FTP_TLS_CRT}:/tmp/bind/minio/minio-ftp.crt:ro"
       - "${OBJECT_STORAGE_FTP_TLS_KEY}:/tmp/bind/minio/minio-ftp.key:ro"
@@ -626,8 +627,7 @@ services:
       - ./nginx/html:/usr/share/nginx/html
       - "./nginx/${PROXY_SITE_CONFIG_FILE}:/etc/nginx/conf.d/default.conf:ro"
       - ./nginx/locations:/etc/nginx/locations:ro
-      - "${PROXY_TLS_CERT_PATH}:/etc/ssl/public.crt:ro"
-      - "${PROXY_TLS_KEY_PATH}:/etc/ssl/private.key:ro"
+      - "proxy-shared-certs:/etc/ssl/internal:ro"
     depends_on:
       frontend:
         condition: service_started
@@ -1447,3 +1447,4 @@ volumes:
   mqtt-broker:
   object-storage:
   crontab:
+  proxy-shared-certs:

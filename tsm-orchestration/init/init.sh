@@ -13,6 +13,7 @@ FLYWAY_CONFIG="/tmp/conf/flyway"
 MOSQUITTO_CONFIG="/tmp/conf/mosquitto"
 NGINX_CONFIG="/tmp/conf/nginx"
 KEYCLOAK_CONFIG="/tmp/conf/keycloak"
+PROXY_CERT_TARGET="/tmp/volume/proxy"
 
 ##################################
 #  create volume subdirectories  #
@@ -21,10 +22,32 @@ KEYCLOAK_CONFIG="/tmp/conf/keycloak"
 mkdir -p $MINIO_CERT_TARGET
 mkdir -p /tmp/volume/minio/vol0
 mkdir -p $MQTT_CERT_TARGET
+mkdir -p $PROXY_CERT_TARGET
 mkdir -p /tmp/volume/mqtt/auth
 mkdir -p /tmp/volume/mqtt/data
 mkdir -p /tmp/volume/cron
 mkdir -p /tmp/volume/database/pgdata
+
+####################
+#      proxy       #
+####################
+
+echo "Preparing TLS certificate and key for Proxy."
+
+if [ ! -f "${PROXY_CERT_TARGET}/public.crt" ] || [ ! -f "${PROXY_CERT_TARGET}/private.key" ] || \
+   ! openssl x509 -checkend 604800 -noout -in ${PROXY_CERT_TARGET}/public.crt; then
+    echo "No valid certificate found in Proxy persistence volume."
+    echo "Generating self-signed certificate and key."
+    openssl req -new -newkey rsa:2048 -days 90 -nodes -x509 \
+        -keyout ${PROXY_CERT_TARGET}/private.key \
+        -out ${PROXY_CERT_TARGET}/public.crt \
+        -subj "/C=DE/O=Helmholtz-Zentrum für Umweltforschung GmbH - UFZ/OU=RDM/CN=localhost" \
+        -addext "subjectAltName = DNS:localhost" \
+        -addext "basicConstraints=critical,CA:FALSE"
+    echo "New self-signed certificate and key generated in Proxy persistence volume."
+else
+    echo "Valid TLS certificate already present in Proxy persistence volume."
+fi
 
 ####################
 #  object-storage  #
