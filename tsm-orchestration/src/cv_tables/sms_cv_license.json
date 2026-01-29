@@ -1,0 +1,26 @@
+{
+  "keys": {
+    "id": {
+      "type": "int4 primary key not null",
+      "path": ["id"]
+    },
+    "term": {
+      "type": "VARCHAR(255) not null",
+      "path": ["attributes", "term"]
+    },
+    "provenance_uri": {
+      "type": "VARCHAR(255)",
+      "path": ["attributes", "provenance_uri"]
+    },
+    "provenance": {
+      "type": "text",
+      "path": ["attributes", "provenance"]
+    },
+    "definition": {
+      "type": "text",
+      "path": ["attributes", "definition"]
+    }
+  },
+  "name": "sms_cv_license",
+  "endpoint": "licenses"
+}

@@ -1,0 +1,332 @@
+html {
+    background-color: #f9fafb;
+    background-attachment: fixed;
+    background-size: cover;
+    height: 100%;
+    overflow-x: hidden;
+    color-scheme: light;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    font-size: 1.5em;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    background-color: transparent;
+    color: #222;
+
+    position: relative;
+    z-index: 0;
+}
+
+/* Orbital waves */
+
+.orbital-waves {
+    position: fixed;
+    top: -30%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 325vh;
+    height: 325vh;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.orbital-waves span {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 47%;
+    animation: rotateWave 25s linear infinite;
+}
+
+.orbital-waves span:nth-child(1) {
+    background: rgba(0, 113, 188, 0.1);
+    animation-duration: 35s;
+}
+
+.orbital-waves span:nth-child(2) {
+    background: rgba(0, 79, 159, 0.1);
+    animation-duration: 50s;
+}
+
+.orbital-waves span:nth-child(3) {
+    background: rgba(95, 180, 192, 0.1);
+    animation-duration: 70s;
+}
+
+.orbital-waves.mirrored {
+    position: fixed;
+    top: 70%;
+    right: 50%;
+    transform: translateX(0%);
+    width: 1225vh;
+    height: 1225vh;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.orbital-waves.mirrored span:nth-child(1) {
+    animation-duration: 40s;
+}
+
+.orbital-waves.mirrored span:nth-child(2) {
+    animation-duration: 55s;
+}
+
+.orbital-waves.mirrored span:nth-child(3) {
+    animation-duration: 75s;
+}
+
+
+/* General links */
+a {
+    text-decoration: none;
+    color: #004c70;;
+}
+
+a:hover {
+    color: #002F6C;
+}
+
+#section-container {
+    position: relative;
+    z-index: 1;
+    max-width: 70vw;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 0 5vw;
+}
+
+#section-links p {
+    animation: fadeIn 0.8s ease-out;
+}
+
+#link-card-list {
+    width: 100%;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    list-style-type: none;
+    margin: 0 auto;
+    padding: 0;
+    flex-wrap: wrap;
+}
+
+#section-title {
+    margin-bottom: 1em;
+    animation: fadeIn .6s ease-out;
+}
+
+#section-images {
+    margin-top: 1em;
+    animation: fadeIn .8s ease-out;
+}
+
+.img-head {
+    height: auto;
+    max-height: 3em;
+    margin: 0 .5em;
+    max-width: 10em;
+}
+
+#img-title {
+    height: 9em;
+}
+
+.link-card-wrapper {
+    flex-direction: column;
+    flex-grow: 1;
+    margin: .3em;
+    text-align: left;
+    border-radius: 12px;
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 76, 112, 0.1);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    color: #222;
+    transition: all .2s ease;
+    animation: cardFadeIn 1s ease-out;
+    min-width: 10em;
+    max-width: 22em;
+    flex-basis: 0;
+}
+
+.link-card-wrapper:hover {
+    background-color: #f0faff;
+    transform: scale(1.03);
+}
+
+.link-card {
+    padding: 1.5em 1.5em 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.link-card-header {
+    text-transform: uppercase;
+    font-size: .9em;
+    font-weight: 600;
+    letter-spacing: .5px;
+    margin-bottom: 1em;
+    color: #00334d;
+}
+
+.link-card-text {
+    color: #444;
+    font-size: .8em;
+    font-weight: 100;
+    margin-bottom: 1.5em;
+}
+
+.link-card-arrow {
+    align-self: flex-end;
+    margin-top: auto;
+    font-size: 1.2em;
+    position: relative;
+    bottom: 2em;
+    color: #008b8b;
+}
+
+/* Footer */
+#section-footer-links {
+    margin-top: 20px;
+    text-align: center;
+    animation: fadeIn 1s ease-out;
+}
+
+#footer-links-list {
+    list-style: none;
+    padding: 0;
+}
+
+#footer-links-list li {
+    display: inline;
+    margin: 0 15px;
+}
+
+.footer-link a {
+    text-decoration: none;
+    color: #004c70;
+    font-size: 1em;
+    transition: color .1s;
+}
+
+.footer-link a:hover {
+    color: #000;
+}
+
+/* keyframes */
+
+@keyframes cardFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.975);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes rotateWave {
+    0% { transform: translateX(-50%) rotate(0deg); }
+    100% { transform: translateX(-50%) rotate(360deg); }
+}
+
+/* mobile */
+@media (max-width: 768px) {
+    body {
+        font-size: 1em;
+        flex-direction: column;
+    }
+
+    .link-card-list {
+        width: 100vw;
+        margin: .3em 0;
+        flex-direction: column;
+    }
+
+    #link-card-list {
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .link-card-wrapper {
+        width: 100%;
+        max-width: 100%;
+        margin: .3em 0;
+    }
+
+    .link-card-arrow {
+        display: none;
+    }
+}
+
+/* Remove all the following when frontend switch is complete */
+
+.hidden {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.draggable {
+    cursor: grab;
+    transition: transform 0.3s ease-out;
+}
+
+.draggable:active {
+    cursor: grabbing;
+}
+
+.dragging {
+    opacity: 0.5;
+    transform: translateX(150px);
+}
+
+.sparkle-border {
+    position: relative;
+    border: 3px solid #008b8b;
+    border-radius: 10px;
+    animation: sparkle 3s infinite;
+}
+
+@keyframes sparkle {
+    0% {
+        box-shadow: 0 0 5px rgba(0, 139, 139, 0.4);
+        border-color: rgba(0, 139, 139, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 15px rgba(0, 139, 139, 0.9);
+        border-color: rgba(0, 139, 139, 0.9);
+    }
+    100% {
+        box-shadow: 0 0 5px rgba(0, 139, 139, 0.4);
+        border-color: rgba(0, 139, 139, 0.4);
+    }
+}

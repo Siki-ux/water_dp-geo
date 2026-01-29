@@ -1,0 +1,1 @@
+ALTER TABLE file_parser ALTER COLUMN uuid DROP DEFAULT;

@@ -1,0 +1,16 @@
+services:
+  database:
+     deploy:
+       replicas: 0
+
+  flyway:
+    depends_on:
+      database:
+        condition: service_healthy
+        required: false
+
+  flyway-thing-management:
+    depends_on:
+      database:
+        condition: service_healthy
+        required: false

@@ -1,0 +1,22 @@
+{
+  "keys": {
+    "id": {
+      "type": "integer PRIMARY KEY",
+      "path": ["id"]
+    },
+    "term": {
+      "type": "VARCHAR(255) not null",
+      "path": ["attributes", "term"]
+    },
+    "provenance_uri": {
+      "type": "VARCHAR(255)",
+      "path": ["attributes", "provenance_uri"]
+    },
+    "definition": {
+      "type": "text",
+      "path": ["attributes", "definition"]
+    }
+  },
+  "name": "sms_cv_measured_quantity",
+  "endpoint": "measuredquantities"
+}

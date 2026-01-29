@@ -1,0 +1,10 @@
+CREATE ROLE ${keycloak_db_user} WITH LOGIN PASSWORD '${keycloak_db_password}';
+GRANT ${keycloak_db_user} TO ${flyway:user};
+CREATE SCHEMA IF NOT EXISTS ${keycloak_db_user} AUTHORIZATION ${keycloak_db_user};
+SET search_path TO ${keycloak_db_user};
+GRANT CONNECT ON DATABASE ${flyway:database} TO ${keycloak_db_user};
+ALTER ROLE ${keycloak_db_user} SET search_path to ${keycloak_db_user};
+GRANT USAGE ON SCHEMA ${keycloak_db_user} TO ${keycloak_db_user};
+GRANT ALL ON SCHEMA ${keycloak_db_user} TO ${keycloak_db_user};
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA ${keycloak_db_user} TO ${keycloak_db_user};
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA ${keycloak_db_user} TO ${keycloak_db_user};

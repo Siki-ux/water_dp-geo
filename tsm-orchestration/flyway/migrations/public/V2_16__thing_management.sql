@@ -1,0 +1,10 @@
+CREATE ROLE ${thing_management_db_user} WITH LOGIN PASSWORD '${thing_management_db_password}';
+GRANT ${thing_management_db_user} TO ${flyway:user};
+CREATE SCHEMA IF NOT EXISTS ${thing_management_db_user} AUTHORIZATION ${thing_management_db_user};
+SET search_path TO ${thing_management_db_user};
+GRANT CONNECT ON DATABASE ${flyway:database} TO ${thing_management_db_user};
+ALTER ROLE ${thing_management_db_user} SET search_path to ${thing_management_db_user};
+GRANT USAGE ON SCHEMA ${thing_management_db_user} TO ${thing_management_db_user};
+GRANT ALL ON SCHEMA ${thing_management_db_user} TO ${thing_management_db_user};
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA ${thing_management_db_user} TO ${thing_management_db_user};
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA ${thing_management_db_user} TO ${thing_management_db_user};

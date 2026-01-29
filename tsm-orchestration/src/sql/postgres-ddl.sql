@@ -1,0 +1,183 @@
+-- Create model Thing
+--
+CREATE TABLE "thing"
+(
+    "id"          bigserial    NOT NULL PRIMARY KEY,
+    "name"        varchar(200) NOT NULL,
+    "uuid"        uuid         NOT NULL UNIQUE,
+    "description" text         NULL,
+    "properties"  jsonb        NULL
+);
+
+--
+-- Create model Sensor
+--
+CREATE TABLE "sensor"
+(
+    "id"          bigserial    NOT NULL PRIMARY KEY,
+    "name"        varchar(200) NOT NULL,
+    "description" text         NULL,
+    "encoding"    varchar(200) NOT NULL,
+    "metadata"    text         NOT NULL,
+    "properties"  jsonb        NULL
+);
+
+--
+-- Create model Observed Property
+--
+CREATE TABLE "observed_property"
+(
+    "id"          bigserial    NOT NULL PRIMARY KEY,
+    "name"        varchar(200) NOT NULL,
+    "definition"  text         NOT NULL,
+    "description" text         NULL,
+    "properties"  jsonb        NULL
+);
+
+--
+-- Create model Feature Of Interest
+--
+CREATE TABLE "feature_of_interest"
+(
+    "id"          bigserial    NOT NULL PRIMARY KEY,
+    "name"        varchar(200) NOT NULL,
+    "description" text         NULL,
+    "encoding"    varchar(200) NOT NULL,
+    "feature"     jsonb        NOT NULL,
+    "properties"  jsonb        NULL
+);
+
+--
+-- Create model Location
+--
+CREATE TABLE "location"
+(
+    "id"          bigserial    NOT NULL PRIMARY KEY,
+    "name"        varchar(200) NOT NULL,
+    "description" text         NULL,
+    "encoding"    varchar(200) NOT NULL,
+    "location"    jsonb        NOT NULL,
+    "properties"  jsonb        NULL
+);
+
+--
+-- Create model Thing Location
+--
+CREATE TABLE "thing_location"
+(
+    "id"          bigserial    NOT NULL PRIMARY KEY,
+    "thing_id"    bigint       NOT NULL,
+    "location_id" bigint       NOT NULL,
+
+    CONSTRAINT "thing_location_thing_id_location_id_uniq" UNIQUE ("thing_id", "location_id"),
+    CONSTRAINT "thing_location_thing_id_fk" FOREIGN KEY ("thing_id") REFERENCES "thing" ("id") DEFERRABLE INITIALLY DEFERRED,
+    CONSTRAINT "thing_location_location_id_fk" FOREIGN KEY ("location_id") REFERENCES "location" ("id") DEFERRABLE INITIALLY DEFERRED
+);
+
+
+
+
+--
+-- Create model Journal
+--
+CREATE TABLE "journal"
+(
+    "id"        bigserial                NOT NULL PRIMARY KEY,
+    "timestamp" timestamp with time zone NOT NULL,
+    "level"     varchar(30)              NOT NULL,
+    "message"   text                     NULL,
+    "extra"     jsonb                    NULL,
+    "thing_id"  bigint                   NOT NULL,
+    "origin"    varchar(200)             NULL,
+
+    CONSTRAINT "journal_thing_id_fk_thing_id" FOREIGN KEY ("thing_id") REFERENCES "thing" ("id") DEFERRABLE INITIALLY DEFERRED
+);
+CREATE INDEX "journal_thing_id" ON "journal" ("thing_id");
+
+
+--
+-- Create model Datastream
+--
+CREATE TABLE "datastream"
+(
+    "id"          bigserial    NOT NULL PRIMARY KEY,
+    "name"        varchar(200) NOT NULL,
+    "description" text         NULL,
+    "properties"  jsonb        NULL,
+    "position"    varchar(200) NOT NULL,
+    "thing_id"    bigint       NOT NULL,
+
+    CONSTRAINT "datastream_thing_id_position_9f2cfe68_uniq" UNIQUE ("thing_id", "position"),
+    CONSTRAINT "datastream_thing_id_f55522a4_fk_thing_id" FOREIGN KEY ("thing_id") REFERENCES "thing" ("id") DEFERRABLE INITIALLY DEFERRED
+);
+CREATE INDEX "datastream_thing_id_f55522a4" ON "datastream" ("thing_id");
+
+
+--
+-- Create model Observation
+--
+CREATE TABLE "observation"
+(
+    "id"                    bigserial                NOT NULL PRIMARY KEY,
+    "phenomenon_time_start" timestamp with time zone NULL,
+    "phenomenon_time_end"   timestamp with time zone NULL,
+    "result_time"           timestamp with time zone NOT NULL,
+    "result_type"           smallint                 NOT NULL,
+    "result_number"         double precision         NULL,
+    "result_string"         varchar(200)             NULL,
+    "result_json"           jsonb                    NULL,
+    "result_boolean"        boolean                  NULL,
+    "result_latitude"       double precision         NULL,
+    "result_longitude"      double precision         NULL,
+    "result_altitude"       double precision         NULL,
+    "result_quality"        jsonb                    NULL,
+    "valid_time_start"      timestamp with time zone NULL,
+    "valid_time_end"        timestamp with time zone NULL,
+    "parameters"            jsonb                    NULL,
+    "datastream_id"         bigint                   NOT NULL,
+
+    CONSTRAINT "observation_datastream_id_result_time_1d043396_uniq" UNIQUE ("datastream_id", "result_time"),
+    CONSTRAINT "observation_datastream_id_77f5c4fb_fk_datastream_id" FOREIGN KEY ("datastream_id") REFERENCES "datastream" ("id") DEFERRABLE INITIALLY DEFERRED
+);
+CREATE INDEX "observation_datastream_id_77f5c4fb" ON "observation" ("datastream_id");
+
+
+--
+-- Create model Relation role
+--
+CREATE TABLE relation_role
+(
+    id                 bigint GENERATED BY DEFAULT AS IDENTITY,
+    name               varchar(200) NOT NULL,
+    definition         text         NULL,
+    inverse_name       varchar(200) NOT NULL,
+    inverse_definition text         NULL,
+    description        text         NULL,
+    properties         jsonb        NULL,
+
+    CONSTRAINT relation_role_pk PRIMARY KEY (id),
+    CONSTRAINT relation_role_pk_2 UNIQUE (name),
+    CONSTRAINT relation_role_pk_3 UNIQUE (inverse_name)
+);
+
+
+--
+-- Create model Related datastreams
+--
+CREATE TABLE related_datastream
+(
+    id            bigint GENERATED ALWAYS AS IDENTITY,
+    datastream_id bigint NOT NULL,
+    role_id       bigint NOT NULL,
+    target_id     bigint NOT NULL,
+
+    CONSTRAINT related_datastream_pk PRIMARY KEY (id),
+    CONSTRAINT related_datastream_pk_2 UNIQUE (datastream_id, role_id, target_id),
+    CONSTRAINT related_datastream_datastream_id_fk FOREIGN KEY (datastream_id) REFERENCES datastream (id) DEFERRABLE INITIALLY DEFERRED,
+    CONSTRAINT related_datastream_datastream_id_fk_2 FOREIGN KEY (target_id) REFERENCES datastream (id) DEFERRABLE INITIALLY DEFERRED,
+    CONSTRAINT related_datastream_relation_role_id_fk FOREIGN KEY (role_id) REFERENCES relation_role (id) DEFERRABLE INITIALLY DEFERRED
+);
+
+COMMENT ON COLUMN related_datastream.datastream_id IS 'Domain, source or set of departure of the relation.';
+COMMENT ON COLUMN related_datastream.role_id IS 'The type of the relation.';
+COMMENT ON COLUMN related_datastream.target_id IS 'Codomain, target  or set of destination of the relation.';

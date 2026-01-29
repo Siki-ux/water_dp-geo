@@ -1,0 +1,3 @@
+ALTER TABLE project DROP COLUMN IF EXISTS mqtt_id;
+
+DROP TABLE IF EXISTS mqtt;

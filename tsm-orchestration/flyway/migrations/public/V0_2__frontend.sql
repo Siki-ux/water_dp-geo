@@ -1,0 +1,10 @@
+CREATE ROLE ${frontend_db_user} WITH LOGIN PASSWORD '${frontend_db_password}';
+GRANT ${frontend_db_user} TO ${flyway:user};
+CREATE SCHEMA IF NOT EXISTS ${frontend_db_user} AUTHORIZATION ${frontend_db_user};
+SET search_path TO ${frontend_db_user};
+GRANT CONNECT ON DATABASE ${flyway:database} TO ${frontend_db_user};
+ALTER ROLE ${frontend_db_user} SET search_path to ${frontend_db_user};
+GRANT USAGE ON SCHEMA ${frontend_db_user} TO ${frontend_db_user};
+GRANT ALL ON SCHEMA ${frontend_db_user} TO ${frontend_db_user};
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA ${frontend_db_user} TO ${frontend_db_user};
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA ${frontend_db_user} TO ${frontend_db_user};

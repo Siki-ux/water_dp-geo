@@ -1,0 +1,25 @@
+--extra-index-url https://codebase.helmholtz.cloud/api/v4/projects/12173/packages/pypi/simple
+
+psycopg[binary]~=3.2.10
+psycopg-pool~=3.2.6
+click~=8.3.0
+pwgen==0.8.2.post0
+paho-mqtt==2.1.0
+PyYAML~=6.0.3
+grafana-client~=5.0.1
+requests~=2.32.3
+python-crontab==3.3.0
+croniter~=6.0.0
+pandas~=2.3.2
+saqc==2.7.0.post3
+cryptography>=46.0.1
+typing-extensions>=4.15.0
+paramiko~=4.0.0
+# TODO: fix minio client wrapper
+# TODO: Instance creation of Minio(..) (see [1]) must use keyword only arguments
+# TODO: before we can use versions >7.2.19
+# TODO: [1] https://git.ufz.de/rdm/minio-cli-wrapper/-/blob/master/Dockerfile?ref_type=heads#L15
+minio==7.2.18
+tsm_user_code>=0.0.1
+pytest-subtests>=0.14.2
+python-dotenv~=1.1.1

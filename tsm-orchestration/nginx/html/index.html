@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>time.IO</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+
+    <div class="orbital-waves">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <div class="orbital-waves mirrored">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+
+    <div id="section-container">
+        <div id="section-images">
+            <a href="https://www.ufz.de">
+                <img class="img-head" alt="Helmholtz-Centre for Environmental Research" src="/images/ufz.png" />
+            </a>
+            <a href="https://www.ufz.de/index.php?en=45348">
+                <img class="img-head" alt="Research Data Management" src="/images/rdm.png" />
+            </a>
+        </div>
+        <div id="section-title">
+            <a href="https://codebase.helmholtz.cloud/ufz-tsm" target="_blank">
+                <img id="img-title" alt="time.IO" src="/images/timeio.svg" />
+            </a>
+        </div>
+        <div id="section-links">
+            <ul id="link-card-list">
+                <!-- remove list item when frontend switch is complete -->
+                <li class="link-card-wrapper draggable" id="draggable-card" draggable="true"
+                    style="animation-duration: .4s;">
+                    <a href="frontend/tsm">
+                        <div class="link-card">
+                            <div class="link-card-header">thing management</div>
+                            <div class="link-card-text">Set up and manage things, data ingests, and quality checks</div>
+                            <div class="link-card-arrow">&nearr;</div>
+                        </div>
+                    </a>
+                </li>
+                <!-- remove hidden classes when frontend switch is complete -->
+                <li class="link-card-wrapper hidden" id="hidden-card" style="animation-duration: .4s;">
+                    <a href="thing-management">
+                        <div class="link-card">
+                            <div class="link-card-header">new thing management</div>
+                            <div class="link-card-text">Set up and manage things, data ingests, and quality checks</div>
+                            <div class="link-card-arrow">&nearr;</div>
+                        </div>
+                    </a>
+                </li>
+                <li class="link-card-wrapper" style="animation-duration: .5s;">
+                    <a href="object-storage/login">
+                        <div class="link-card">
+                            <div class="link-card-header">Object Storage</div>
+                            <div class="link-card-text">Store and access time series data securely in organized storage
+                                buckets</div>
+                            <div class="link-card-arrow">&nearr;</div>
+                        </div>
+                    </a>
+                </li>
+                <li class="link-card-wrapper" style="animation-duration: .6s;">
+                    <a href="visualization">
+                        <div class="link-card">
+                            <div class="link-card-header">grafana</div>
+                            <div class="link-card-text">Visualize datastreams with interactive charts and dashboards
+                            </div>
+                            <div class="link-card-arrow">&nearr;</div>
+                        </div>
+                    </a>
+                </li>
+                <li class="link-card-wrapper" style="animation-duration: .7s;">
+                    <a href="sta">
+                        <div class="link-card">
+                            <div class="link-card-header">Sensor Things API (STA)</div>
+                            <div class="link-card-text">Access datastreams and sensor metadata through a standardized
+                                API</div>
+                            <div class="link-card-arrow">&nearr;</div>
+                        </div>
+                    </a>
+                </li>
+                <li class="link-card-wrapper" style="animation-duration: .8s;">
+                    <a href="/hydroportal" target="_blank">
+                        <div class="link-card">
+                            <div class="link-card-header">HydroPortal</div>
+                            <div class="link-card-text">Explore hydrological data and services via the HydroPortal</div>
+                            <div class="link-card-arrow">&nearr;</div>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div id="section-footer-links">
+            <ul id="footer-links-list">
+                <li class="footer-link"><a href="https://codebase.helmholtz.cloud/ufz-tsm">Codebase</a></li>
+                <li class="footer-link"><a href="https://codebase.helmholtz.cloud/ufz-tsm/timeio-support">Service
+                        Desk</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- delete script when frontend switch is complete -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const draggableCard = document.getElementById("draggable-card");
+            const hiddenCard = document.getElementById("hidden-card");
+
+            draggableCard.addEventListener("dragstart", () => {
+                draggableCard.classList.add("dragging");
+                setTimeout(() => {
+                    draggableCard.style.display = "none";
+                    hiddenCard.style.display = "block";
+                    hiddenCard.classList.add("sparkle-border");
+                    hiddenCard.style.opacity = "1";
+                    hiddenCard.style.animationDuration = "1s";
+                }, 200)
+            });
+        });
+    </script>
+</body>
+
+</html>

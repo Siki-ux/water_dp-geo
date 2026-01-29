@@ -1,0 +1,16 @@
+services:
+  # Description
+  # ===========
+  # A service to re publish all saved thing of configDB
+  # it uses the configdb-updater which contains the necessary script
+  all-things-publisher:
+    image: "${TIMEIO_IMAGE_REGISTRY}/configdb-updater:${TIMEIO_CONFIGDB_UPDATER_IMAGE_TAG}"
+    environment:
+      LOG_LEVEL: "${LOG_LEVEL}"
+      MQTT_BROKER: mqtt-broker:1883
+      MQTT_USER: "${MQTT_USER}"
+      MQTT_PASSWORD: "${MQTT_PASSWORD}"
+      MQTT_CLIENT_ID: all-things-publisher
+      MQTT_PUBLISH_TOPIC: "${TOPIC_CONFIG_DB_UPDATE}"
+      MQTT_QOS: "${MQTT_QOS}"
+      DATABASE_DSN: "${DATABASE_ADMIN_DSN}"
