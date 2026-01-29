@@ -468,6 +468,9 @@ services:
       OIDC_REDIRECT_URL: "${THING_MANAGEMENT_FRONTEND_REDIRECT_URL}"
       OIDC_POST_LOGOUT_URL: "${THING_MANAGEMENT_FRONTEND_POST_LOGOUT_URL}"
       OIDC_SCOPES: "${THING_MANAGEMENT_FRONTEND_SCOPES}"
+      # Disable PKCE for HTTP-only deployment (PKCE requires Crypto.subtle which needs HTTPS)
+      OIDC_PKCE_DISABLED: "true"
+      OIDC_DISABLE_PKCE: "true"
     volumes:
       - ./thing-management/nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:

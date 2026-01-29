@@ -651,7 +651,8 @@
       "require.pushed.authorization.requests" : "false",
       "tls.client.certificate.bound.access.tokens" : "false",
       "display.on.consent.screen" : "true",
-      "token.response.type.bearer.lower-case" : "false"
+      "token.response.type.bearer.lower-case" : "false",
+      "pkce.code.challenge.method" : ""
     },
     "authenticationFlowBindingOverrides" : { },
     "fullScopeAllowed" : true,
