@@ -185,7 +185,8 @@ if [ "${USE_CHOWN}" == "true" ]; then
         /tmp/volume/cron \
         /tmp/volume/database \
         /tmp/volume/visualization \
-        /tmp/volume/tomcat
+        /tmp/volume/tomcat \
+        /tmp/volume/proxy
 else
     echo "Skipping chown of volume directories as USE_CHOWN is not set to 'true'."
 fi
